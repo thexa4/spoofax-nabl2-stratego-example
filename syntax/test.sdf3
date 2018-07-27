@@ -1,0 +1,18 @@
+module test
+
+imports
+  
+  Common
+
+context-free start-symbols
+  
+  Start
+
+context-free syntax
+  
+  Start.Empty = <>
+  Start.Block = <start
+  <Sub>
+  end>
+  
+  Sub.True = <true>

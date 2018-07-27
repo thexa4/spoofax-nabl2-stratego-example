@@ -1,0 +1,35 @@
+module test
+
+imports
+  
+  completion/completion
+  pp
+  outline
+  analysis
+
+rules // Debugging
+  
+  debug-show-aterm:
+    (node, _, _, path, project-path) -> (filename, result)
+    with
+      filename := <guarantee-extension(|"aterm")> path
+    ; result   := node
+    
+
+
+strategies
+  strat-compile(|analysis) = innermost(rule-compile(|analysis))
+
+rules
+  compile:
+    (_, _, ast, path, project-path) -> (filename, result)
+    where
+       analysis := <nabl2-get-resource-analysis> $[[project-path]/[path]];
+       <not(nabl2-analysis-has-errors)> analysis
+    with filename := <guarantee-extension(|"tesc")> path
+       ; result   := <strat-compile(|analysis)> ast
+
+  rule-compile(|analysis): input@True() -> termType
+    with
+      termType := <nabl2-get-ast-type(|analysis)> input
+    

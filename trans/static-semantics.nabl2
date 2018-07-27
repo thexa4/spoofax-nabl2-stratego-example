@@ -1,0 +1,21 @@
+module static-semantics
+
+imports
+
+  signatures/-
+
+signature
+  constructors
+    BoolT : Type
+
+rules
+
+  init ^ (s) := new s.
+
+  [[ Empty() ^ (s) ]] :=
+    false | note "Specify name binding and typing rules in static-semantics.nabl2".
+
+  [[ Block(inner) ^ (s) ]] :=
+    [[ inner ^ (s) : t ]].
+
+  [[ True() ^ (s) : BoolT() ]].
